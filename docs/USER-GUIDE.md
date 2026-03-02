@@ -29,9 +29,6 @@ This guide helps employees use the App Portal for Intune to browse, request, and
 3. Enter your work email and password
 4. Complete any MFA (multi-factor authentication) prompts if required
 
-![Sign in page](images/user-guide-signin.png)
-*The sign-in page with Microsoft authentication*
-
 Once signed in, you'll see the home page with featured apps and categories.
 
 ### First-Time Users
@@ -205,8 +202,7 @@ After your request is approved, you can track the installation progress.
 | **Install Failed** | Installation encountered an error |
 | **Not Applicable** | User-targeted app (no device-specific status) |
 
-![Install status](images/user-guide-install-status.png)
-*Request details showing installation status*
+Install status is visible on the My Requests page (see [Tracking Your Requests](#tracking-your-requests) above).
 
 ### How Long Does Installation Take?
 
