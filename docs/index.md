@@ -12,7 +12,7 @@ hide:
 <div class="quick-links">
   <a class="quick-link-card" href="SETUP/">
     <span class="card-icon">
-      <img src="images/icon-overview.svg" alt="">
+      <img src="images/icon-overview.svg" alt="" class="skip-lightbox">
     </span>
     <span class="card-content">
       <span class="card-label">GETTING STARTED</span>
@@ -21,7 +21,7 @@ hide:
   </a>
   <a class="quick-link-card" href="ADMIN-GUIDE/">
     <span class="card-icon">
-      <img src="images/administration.svg" alt="">
+      <img src="images/administration.svg" alt="" class="skip-lightbox">
     </span>
     <span class="card-content">
       <span class="card-label">ADMINISTRATION</span>
@@ -30,7 +30,7 @@ hide:
   </a>
   <a class="quick-link-card" href="USER-GUIDE/">
     <span class="card-icon">
-      <img src="images/apps.svg" alt="">
+      <img src="images/apps.svg" alt="" class="skip-lightbox">
     </span>
     <span class="card-content">
       <span class="card-label">USERS</span>
@@ -39,7 +39,7 @@ hide:
   </a>
   <a class="quick-link-card" href="SECURITY/">
     <span class="card-icon">
-      <img src="images/device-security.svg" alt="">
+      <img src="images/device-security.svg" alt="" class="skip-lightbox">
     </span>
     <span class="card-content">
       <span class="card-label">SECURITY &amp; COMPLIANCE</span>
