@@ -189,7 +189,7 @@ The default ARM template deployment includes these disaster recovery features:
    ```bash
    az deployment group create \
      --resource-group apprequest-dr \
-     --template-uri https://raw.githubusercontent.com/powerstacks-corp/app-store-for-intune/main/azuredeploy.json \
+     --template-uri https://raw.githubusercontent.com/powerstacks-corp/AppRequestPortal/main/azuredeploy.json \
      --parameters \
        environmentName=prod \
        apiClientId=<client-id> \
