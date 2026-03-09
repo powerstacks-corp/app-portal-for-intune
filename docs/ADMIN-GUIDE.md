@@ -1541,7 +1541,7 @@ The PSADT v4 template is automatically downloaded from the [official GitHub repo
 
 ### App Updates
 
-The **App Updates** section on the Winget Catalog tab shows all apps that have been published from WinGet and are being tracked for version updates.
+The **App Updates** tab in the Admin Dashboard shows all apps that have been published from WinGet and are being tracked for version updates.
 
 **Tracked Apps Table:**
 
