@@ -340,6 +340,21 @@ az webapp restart \
 
 ---
 
+#### Error: 404 When Packaging WinGet Apps with Nested Package IDs
+
+**Cause (fixed in v1.11.31):** Some WinGet packages use numeric sub-directories that are part of the package ID rather than version numbers. For example, `Microsoft.SQLServerManagementStudio` has a sub-directory `22/` which is part of the full package ID `Microsoft.SQLServerManagementStudio.22`. Prior to v1.11.31, the system mistakenly treated `22/` as a version directory, then failed to find the manifest file because the actual filename includes the full package ID (e.g., `Microsoft.SQLServerManagementStudio.22.installer.yaml` rather than `Microsoft.SQLServerManagementStudio.installer.yaml`).
+
+**Symptoms:**
+- Packaging job fails during the "Downloading" phase
+- Application Insights shows a 404 error when fetching the `.installer.yaml` file
+- Affected packages include any with numeric sub-directories in the WinGet repo (e.g., `Microsoft.SQLServerManagementStudio`, `Microsoft.DirectX`)
+
+**Solution:** Upgrade to v1.11.31 or later. The fix adds two layers of detection:
+1. **Version resolution**: When a numeric directory has no manifest files, the system recognizes it as a package ID segment and drills into the actual version sub-directories
+2. **Manifest filename discovery**: If the expected manifest filename returns a 404, the system lists the version directory via the GitHub API to find the correct `.installer.yaml` filename
+
+---
+
 #### Error: "File {filename}.exe can not be found"
 
 **Cause:** Downloaded installer file is missing or failed to download.
