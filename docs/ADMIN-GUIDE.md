@@ -16,7 +16,7 @@ After initial deployment and Entra ID configuration (see [SETUP.md](SETUP.md)), 
    - **Settings** - Configure portal-wide options (authorization, display, deployment)
    - **Communications** - Notification settings, company branding, and Terms of Service
    - **Branding** - Customize portal appearance
-   - **Winget Catalog** - Browse and publish apps from Winget
+   - **App Catalog** - Browse and publish apps from Winget
    - **Reports** - View analytics, trends, and deployment status
 
 ### Setup Wizard
@@ -849,7 +849,7 @@ See [APPROVAL-WORKFLOWS.md](APPROVAL-WORKFLOWS.md) for detailed workflow configu
 
 ### Version History and Rollback
 
-The portal tracks version history for apps published from the Winget Catalog, enabling you to rollback to previous versions if a new version introduces issues.
+The portal tracks version history for apps published from the App Catalog, enabling you to rollback to previous versions if a new version introduces issues.
 
 #### Viewing Version History
 
@@ -897,7 +897,7 @@ If a new app version causes issues, you can rollback to a previous version:
 
 #### Version History Limitations
 
-- **Winget apps only**: Version history is only tracked for apps published from the Winget Catalog
+- **Winget apps only**: Version history is only tracked for apps published from the App Catalog
 - **Manual Intune apps**: Apps added directly to Intune (not via portal) do not have version history
 - **Retention policy**: By default, the portal keeps all versions indefinitely. Admins can configure retention limits in Settings
 
@@ -1033,11 +1033,11 @@ When you receive a new app request email:
 
 1. **Evaluate the request**: Is this app appropriate for your organization?
 2. **Find the app**:
-   - Check the Winget Catalog in Admin Dashboard for easy publishing
+   - Check the App Catalog in Admin Dashboard for easy publishing
    - Search for the app in Intune if it's already available
    - Download from the vendor if needed
 3. **Add to portal**:
-   - Use Winget Catalog to publish directly to Intune, or
+   - Use App Catalog to publish directly to Intune, or
    - Manually add the app to Intune and sync
 4. **Configure visibility**: Make the app visible in the portal
 5. **Notify the user**: Reply to the email or notify the user directly
@@ -1280,13 +1280,13 @@ With automatic group and assignment creation, the portal handles most group mana
 3. Use a recognizable From address like `apprequest@company.com`
 4. Include your portal URL so users can click through to view status
 
-## Winget Catalog & Cloud Packaging
+## App Catalog & Cloud Packaging
 
-The **Winget Catalog** tab in the Admin Dashboard allows you to browse over 9,000 apps from Microsoft's official WinGet repository ([microsoft/winget-pkgs](https://github.com/microsoft/winget-pkgs)) and publish them directly to Intune as Win32 apps. Package manifests are fetched directly from GitHub (no third-party services), ensuring zero supply chain attack risk.
+The **App Catalog** tab in the Admin Dashboard allows you to browse over 9,000 apps from Microsoft's official WinGet repository ([microsoft/winget-pkgs](https://github.com/microsoft/winget-pkgs)) and publish them directly to Intune as Win32 apps. Package manifests are fetched directly from GitHub (no third-party services), ensuring zero supply chain attack risk.
 
-### Browsing the Winget Catalog
+### Browsing the App Catalog
 
-1. Navigate to **Admin** > **Winget Catalog** tab
+1. Navigate to **Admin** > **App Catalog** tab
 2. Popular packages are displayed 24 per page with pagination controls
 3. Use the search box to find specific apps (search uses "Load More" infinite scroll)
 4. Each package shows: name, publisher, version, and description
@@ -1340,7 +1340,7 @@ The packaging process runs in-process on the App Service — no separate contain
 
 ### Packaging Methods: Raw vs PSADT
 
-When publishing an app from the Winget Catalog, you can choose between two packaging methods using the dropdown on each package card:
+When publishing an app from the App Catalog, you can choose between two packaging methods using the dropdown on each package card:
 
 | Method | Description |
 |--------|-------------|
@@ -1533,7 +1533,7 @@ Packaging works out of the box with the default deployment. No additional setup 
 1. **Azure Storage Account** (deployed by default via Bicep template)
 2. **Graph API permissions** for Intune app management (see Prerequisites)
 3. **Verify connectivity**:
-   - Go to Admin > Winget Catalog
+   - Go to Admin > App Catalog
    - Try publishing a test app (e.g., "7-Zip")
    - Check Packaging Jobs for status
 
@@ -1621,7 +1621,7 @@ For developers testing the packaging feature locally:
    cd src/AppRequestPortal.Web && npm start
    ```
 
-4. **Test**: Go to Admin > Winget Catalog, search for an app, click "Publish to Intune". The in-process background service will pick up the job and process it.
+4. **Test**: Go to Admin > App Catalog, search for an app, click "Publish to Intune". The in-process background service will pick up the job and process it.
 
 ### Troubleshooting Packaging
 

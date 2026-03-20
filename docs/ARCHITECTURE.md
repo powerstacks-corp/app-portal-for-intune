@@ -899,7 +899,7 @@ Custom approval workflows can be configured per app:
 - **Notifications** - Email notifications at each stage
 - **Tracking** - View current approval stage in pending approvals list
 
-### Winget Catalog Integration
+### App Catalog Integration
 Import apps from the Windows Package Manager (Winget) repository:
 - Search the Winget catalog by name
 - View app details including publisher, version, and description
