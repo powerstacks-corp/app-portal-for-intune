@@ -8,7 +8,7 @@ Each app can be configured to either require approval or not. For apps that requ
 
 ### Requires Approval Setting
 
-In the Admin Dashboard's **App Management** tab, each app has an **Approval** toggle:
+In the Admin Dashboard's **App Management** tab, click an app row to open its detail view. Under **Approval Settings**, you can configure whether approval is required:
 
 - **No**: Requests are auto-approved immediately. The user/device is added to the target AAD group without any approval steps.
 - **Yes**: Requests go through the configured approval workflow before completion.
@@ -161,7 +161,7 @@ Removes the workflow configuration. Apps without a workflow will use the default
 
 1. Navigate to the **Admin Dashboard** > **App Management** tab
 2. Find the app you want to configure
-3. Set the **Approval** toggle to **Yes** (if not already)
+3. Set **Requires Approval** to **Yes** (if not already)
 4. Click the **Workflow** button to open the Approval Workflow Editor
 5. Configure the workflow:
    - Toggle **Require Manager Approval** if needed
@@ -196,7 +196,7 @@ You can also configure workflows programmatically using the API endpoints descri
 For low-risk apps that don't need any oversight:
 
 1. In Admin Dashboard, find the app
-2. Set the **Approval** toggle to **No**
+2. Set **Requires Approval** to **No**
 
 Requests are immediately approved and the user/device is added to the target group. No workflow configuration needed.
 

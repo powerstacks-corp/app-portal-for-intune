@@ -626,16 +626,17 @@ The App Management tab is your central hub for managing which Intune apps are av
 
 ### App Table Columns
 
+The app list table is read-only and informational. Click any row to open the app's detail view where you can edit settings.
+
 | Column | Description |
 |--------|-------------|
 | **App** | App name, icon, and publisher |
-| **Type** | App platform and type from Intune (e.g., Win32, Microsoft Store, iOS Store) |
-| **Category** | App category (editable via Edit modal) |
-| **Cost** | Optional cost to display to users (editable) |
-| **Assignment** | User or Device - determines what gets added to the AAD group |
-| **Approval** | Whether this app requires approval workflow |
-| **Visible** | Whether users can see this app in the portal |
-| **Actions** | Edit details or configure approval workflow |
+| **Platform** | App platform badge (Windows, iOS, Android, macOS, Web) |
+| **Type** | App type from Intune (e.g., Win32, Microsoft Store, iOS Store) |
+| **Assigned** | Status badge showing whether a target group is configured (Yes/No/N-A) |
+| **Visible** | Status badge showing whether users can see this app in the portal (Yes/No/N-A) |
+| **Approval** | Status badge showing whether approval is required (Yes/No/N-A) |
+| **Date Added** | When the app was first synced or published |
 
 ### Supported App Types
 
@@ -653,40 +654,53 @@ The portal supports self-service deployment for specific app types. When syncing
 - **Line of Business (LoB) apps** require special handling during deployment that the portal cannot automate
 - **macOS apps** have different deployment mechanisms that are not yet implemented
 
-Unsupported apps appear in the admin UI with their type displayed, but the **Visible** toggle is disabled. Admins can see these apps exist but cannot make them available for self-service.
+Unsupported apps appear in the admin UI with their type displayed and an "N/A" status badge. Admins can see these apps exist but cannot make them available for self-service.
 
 ### Configuring Individual Apps
 
-#### Visibility Toggle
+Click any app row in the table to open its **detail view**. The detail view has two sections accessible from the left navigation:
 
-- **Yes** (green): App appears in the user-facing app catalog
-- **No** (red): App is hidden from users but still tracked in the system
-- **Disabled** (grayed out): App type is not supported for self-service deployment
+- **Overview** — Quick summary cards showing platform, visibility, approval status, assignment type, date added, and version
+- **Properties** — Grouped property sections (described below), each with an **Edit** link
+
+#### Editing App Settings
+
+There are three ways to edit app settings from the detail view:
+
+1. **Side panel (quick edit)** — Click "Edit" on the Visibility or Approval section to open a slide-out panel for fast single-field changes
+2. **Settings wizard** — Click "Edit" on the Assignment or Deployment Options section to open the full 5-step wizard, starting at the relevant step
+3. **Edit All Settings** — Click the "Edit All Settings" button to open the wizard from step 1
+
+The **App Settings Wizard** has 5 steps:
+
+| Step | Title | Fields |
+|------|-------|--------|
+| 1 | Visibility & Store | Visible, Featured, Category, Cost |
+| 2 | Approval | Requires Approval, Acknowledgment |
+| 3 | Assignment | Assignment type, Target group, Assignment filter |
+| 4 | Deployment Options | Install behavior, Restart behavior, Notifications, Grace period (Win32 only) |
+| 5 | Review + Save | Summary of all changes with diff highlighting |
+
+#### Visibility Settings
+
+- **Yes**: App appears in the user-facing app catalog
+- **No**: App is hidden from users but still tracked in the system
+- **N/A**: App type is not supported for self-service deployment
 
 Use this to control which Intune apps are available for self-service requests. Apps that shouldn't be requested (system apps, dependencies, etc.) should remain hidden.
 
 **Hiding Apps with Active Deployments:**
 
-When you uncheck the "Visible" toggle on an app that has an active Intune deployment and Azure AD group, a confirmation dialog appears asking:
+When you set an app's visibility to **No** and it has an active Intune deployment and Azure AD group, a confirmation dialog appears asking whether you also want to delete the deployment group and assignment:
 
-> Are you sure you want to hide "[App Name]"?
->
-> This app has an Intune deployment (GroupName).
->
-> Do you want to also delete the deployment group and assignment?
->
-> • Click OK to hide the app AND delete the deployment/group
-> • Click Cancel to hide the app but keep the deployment/group
-
-This gives you two options:
-- **OK**: Hides the app from the catalog AND removes the Intune assignment and deletes the Azure AD deployment group
-- **Cancel**: Only hides the app from the catalog but preserves the deployment infrastructure (useful if you plan to make it visible again later)
+- **OK**: Hides the app AND removes the Intune assignment and deletes the Azure AD deployment group
+- **Cancel**: Only hides the app but preserves the deployment infrastructure (useful if you plan to make it visible again later)
 
 > **Note:** Deleting the deployment and group is permanent. Users who currently have the app will lose access when group membership is removed.
 
 **Automatic Deployment Setup:**
 
-When you toggle an app's visibility to **Yes** for the first time, the portal automatically:
+When you set an app's visibility to **Yes** for the first time, the portal automatically:
 
 1. **Creates an Entra ID Security Group** named `{GroupNamePrefix}{AppName}-{arch}-{locale}-v{version}-Required`
    - Example: `AppStore-Microsoft Teams-x64-en-US-v1-0-0-Required`
@@ -699,27 +713,19 @@ When you toggle an app's visibility to **Yes** for the first time, the portal au
 
 This automation ensures that when a user's request is approved, they simply need to be added to the group and Intune handles the deployment.
 
-> **Note:** If group or assignment creation fails, the error is logged but the visibility toggle still succeeds. You can manually create the assignment in Intune if needed.
+> **Note:** If group or assignment creation fails, the error is logged but the visibility change still succeeds. You can manually create the assignment in Intune if needed.
 
-#### Requires Approval Toggle
+#### Approval Settings
 
 - **Yes**: Requests go through the configured approval workflow before completion
 - **No**: Requests are auto-approved and the user/device is immediately added to the target group
-- **Disabled** (grayed out): App is not visible - approval can only be enabled for visible apps
+- **N/A**: App type is not supported
 
-Use "No" for low-risk apps that don't need oversight. Use "Yes" for apps that need manager or IT approval.
-
-**Approval Requires Visibility:**
-
-The approval toggle is automatically disabled if the app is not visible. This validation ensures that:
-- You cannot enable approval for apps that users cannot see in the catalog
-- You cannot hide an app that currently requires approval (you must disable approval first)
-
-If you try to enable approval for a hidden app, you'll see the tooltip: "App must be visible to enable approval".
+Approval can only be enabled for visible apps. If you try to enable approval for a hidden app, you'll see a warning: "App must be visible in the store to enable approval."
 
 #### Delete from Intune
 
-A red **Delete** button appears in the Actions column for any app with a real Intune deployment (not synced apps with a `winget-` prefix). Clicking it removes the app from both Intune and the portal entirely.
+From the app detail view, apps with a real Intune deployment (not synced apps with a `winget-` prefix) can be deleted. This removes the app from both Intune and the portal entirely.
 
 **Confirmation flow:**
 
@@ -855,7 +861,7 @@ The portal tracks version history for apps published from the App Catalog, enabl
 
 1. Go to **Admin** > **App Management** tab
 2. Find the app in the app table
-3. Click the **History** button in the Actions column
+3. Open the app's detail view by clicking the row
 4. The Version History modal displays all recorded versions
 
 #### Understanding Version Status
@@ -1785,7 +1791,7 @@ We recommend testing your recovery capability monthly:
 
 ### Users Not Seeing Apps
 
-- Verify the app's **Visible** toggle is set to Yes
+- Verify the app's **Visible** status is set to Yes (open the app detail view to check)
 - Check that the user is authenticated
 - Confirm the app has synced (check Last Sync Date)
 
