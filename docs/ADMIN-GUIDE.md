@@ -1584,6 +1584,7 @@ In **Admin** > **Settings**, scroll to the **Update Ring Templates** section:
 - Each ring has a name (e.g., "IT Pilot"), a delay in days, and one or more Entra ID security groups
 - Ring 1 typically has a 0-day delay (deploys immediately); subsequent rings deploy after their configured delay
 - Set one template as the **default** to auto-assign it to new apps
+- Click **Import from Autopatch** to discover Windows Autopatch ring groups from your Entra ID and pre-populate rings with those groups
 
 **Example Configuration:**
 
@@ -1602,6 +1603,33 @@ For apps published from the Winget catalog, the app detail view includes an **Up
 - Enable or disable ring-based updates for each app
 - Select a template or use the default
 - When disabled, updates deploy immediately to all assigned groups (backward compatible)
+
+### Ring-Based Deployments
+
+When you click **Deploy Update** for an app with ring-based updates enabled, the system:
+
+1. Creates a packaging job for the new version (same as non-ringed updates)
+2. When packaging completes, creates a new "Update" Win32 app in Intune
+3. Activates **Ring 1** immediately — creates Required assignments for Ring 1's groups
+4. Schedules subsequent rings based on their configured delays
+5. A background service checks every 15 minutes for rings that are ready to activate
+6. When each ring's delay expires, its groups receive the Required assignment
+
+**Deployment Dashboard:**
+
+The **App Updates** tab shows active and recent deployments below the updates table:
+
+- **Ring progress indicator** — colored circles show which ring is active
+- Click a deployment row to expand and see detailed ring status, schedule dates, and group assignments
+- **Pause** — stops ring progression (active ring stays deployed, next ring is held)
+- **Resume** — restarts ring progression after a pause
+- **Advance** — manually skip the delay for the next ring (useful for accelerating after pilot validation)
+- **Rollback** — removes active ring assignments (devices that already updated keep the new version; future deployments are stopped)
+- **Cancel** — removes all assignments and marks the deployment as cancelled
+
+**Rollback Behavior:**
+
+Rolling back a ring-based deployment removes the Intune assignments from active rings so no additional devices receive the update. Devices that already installed the update retain the new version — Intune does not uninstall it. To fully revert, you would need to deploy the old version as a separate update.
 
 ### Winget Integration Settings
 
