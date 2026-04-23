@@ -1629,7 +1629,47 @@ The **App Updates** tab shows active and recent deployments below the updates ta
 
 **Rollback Behavior:**
 
-Rolling back a ring-based deployment removes the Intune assignments from active rings so no additional devices receive the update. Devices that already installed the update retain the new version — Intune does not uninstall it. To fully revert, you would need to deploy the old version as a separate update.
+Rolling back a ring-based deployment removes the Intune assignments from active rings so no additional devices receive the update. Devices that already installed the update retain the new version -- Intune does not uninstall it. To fully revert, you would need to deploy the old version as a separate update.
+
+### Signal-Based Ring Progression
+
+Ring advancement is not just delay-based -- the system checks device install health from Intune before advancing to the next ring. This prevents a failed update from rolling out broadly.
+
+**How it works:**
+
+After a ring's delay expires, the progression service queries Intune for device install status before advancing:
+
+| Condition | Action |
+|-----------|--------|
+| Success rate >= threshold (default 95%) | Advance to next ring |
+| Failure rate > failure threshold (default 10%) | **Auto-pause** deployment, notify admin |
+| Not enough data yet (evaluation period not met) | Wait, even if delay expired |
+
+**Configuration (on ring templates):**
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| Minimum success rate | 95% | Required success rate before advancing |
+| Maximum failure rate | 10% | Failure rate that triggers auto-pause |
+| Minimum evaluation period | 24 hours | Wait time after ring activation before checking status |
+
+Set the minimum success rate to 0% to advance based on delay only (disables health checks).
+
+### Auto-Deploy Updates
+
+Updates can be deployed automatically when detected, eliminating the need to click "Deploy Update" for each app.
+
+**Global setting (Admin > Settings):**
+- **Auto-deploy updates** -- when enabled, all apps with ring-based updates configured will automatically package and deploy through their rings when a new version is detected
+
+**Per-app override (App detail view):**
+- **Always auto-deploy** -- this app always auto-deploys, regardless of the global setting
+- **Never auto-deploy** -- this app never auto-deploys, regardless of the global setting
+- **Use global default** -- follows the global setting
+
+**Safety requirements:**
+- Auto-deploy only works for apps with ring-based updates enabled. Apps without rings configured will still require manual "Deploy Update" clicks, even if auto-deploy is on. This ensures all auto-deployed updates go through staged rings.
+- The "Deploy Update" button on the Updates tab always works for manual one-off deployments regardless of auto-deploy settings.
 
 ### Winget Integration Settings
 
