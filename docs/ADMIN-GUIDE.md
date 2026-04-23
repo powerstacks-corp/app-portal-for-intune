@@ -1557,9 +1557,9 @@ The **App Updates** tab in the Admin Dashboard shows all apps that have been pub
 | **WinGet Package ID** | The WinGet identifier (e.g., `Microsoft.VisualStudioCode`) |
 | **Published Version** | Version currently in your portal/Intune |
 | **Latest Version** | Latest version available in the WinGet repository |
-| **Status** | "Update Available" (green) or "Up to Date" |
+| **Status** | "Update Available" (green), "Packaging..." (blue, when a packaging job is in progress), or "Up to Date" |
 | **Last Checked** | When the version was last compared |
-| **Actions** | Apply or Dismiss update (only shown when update is available) |
+| **Actions** | Deploy Update or Dismiss (only shown when update is available) |
 
 **Automatic Tracking:**
 - Apps published from the WinGet catalog are automatically tracked for updates
@@ -1568,7 +1568,7 @@ The **App Updates** tab in the Admin Dashboard shows all apps that have been pub
 
 **Actions:**
 - **Check for Updates**: Manually trigger an update check for all tracked apps
-- **Apply**: Updates the portal record with the latest version information
+- **Deploy Update**: Creates a packaging job that downloads the new version from Winget, wraps it in PSADT, and creates a new Win32 app in Intune. The portal App record is automatically updated with the new Intune app ID and version history is recorded.
 - **Dismiss**: Hides the update notification for that app
 
 ### Winget Integration Settings
