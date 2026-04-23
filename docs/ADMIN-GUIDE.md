@@ -1571,6 +1571,38 @@ The **App Updates** tab in the Admin Dashboard shows all apps that have been pub
 - **Deploy Update**: Creates a packaging job that downloads the new version from Winget, wraps it in PSADT, and creates a new Win32 app in Intune. The portal App record is automatically updated with the new Intune app ID and version history is recorded.
 - **Dismiss**: Hides the update notification for that app
 
+### Update Ring Templates
+
+Ring templates define a staged deployment strategy for app updates. Instead of deploying an update to all devices at once, rings let you roll out to a pilot group first, wait a configurable number of days, then expand to broader groups.
+
+**Managing Templates:**
+
+In **Admin** > **Settings**, scroll to the **Update Ring Templates** section:
+
+- Click **Create Template** to define a new ring template
+- Each template has a name and one or more rings (up to 10)
+- Each ring has a name (e.g., "IT Pilot"), a delay in days, and one or more Entra ID security groups
+- Ring 1 typically has a 0-day delay (deploys immediately); subsequent rings deploy after their configured delay
+- Set one template as the **default** to auto-assign it to new apps
+
+**Example Configuration:**
+
+| Ring | Name | Delay | Groups |
+|------|------|-------|--------|
+| 1 | IT Pilot | 0 days | IT-Pilot-Devices |
+| 2 | Early Adopters | 3 days | Early-Adopters |
+| 3 | Production | 7 days | All-Managed-Devices |
+
+This means Ring 1 deploys immediately, Ring 2 deploys 3 days later, and Ring 3 deploys 7 days after Ring 2 — a total rollout of 10 days.
+
+**Per-App Configuration:**
+
+For apps published from the Winget catalog, the app detail view includes an **Update Rings** section under Properties:
+
+- Enable or disable ring-based updates for each app
+- Select a template or use the default
+- When disabled, updates deploy immediately to all assigned groups (backward compatible)
+
 ### Winget Integration Settings
 
 In **Admin** > **Settings** > **Winget Integration**:
