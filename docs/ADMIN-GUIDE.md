@@ -1627,9 +1627,25 @@ The **App Updates** tab shows active and recent deployments below the updates ta
 - **Rollback** — removes active ring assignments (devices that already updated keep the new version; future deployments are stopped)
 - **Cancel** — removes all assignments and marks the deployment as cancelled
 
-**Rollback Behavior:**
+**Two-App Model:**
 
-Rolling back a ring-based deployment removes the Intune assignments from active rings so no additional devices receive the update. Devices that already installed the update retain the new version -- Intune does not uninstall it. To fully revert, you would need to deploy the old version as a separate update.
+When you deploy an update with rings enabled, the system creates two separate Win32 apps in Intune:
+
+1. **Install app** (user-targeted) -- immediately updated to the new version so new installs always get the latest. Existing assignments are preserved.
+2. **Update app** (device-targeted) -- a separate Win32 app with a requirement script that only installs on devices that already have the app. Devices without the app see it as "Not Applicable." Ring assignments are created on this app.
+
+This separation ensures:
+- New device enrollments always get the latest version (no vulnerability window)
+- Updates to existing devices are controlled through rings with health checks
+- User-targeted and device-targeted assignments don't conflict
+
+**Install App Rollback:**
+
+If a new version has installation issues, you can roll back the Install app to the previous version with one click. In the app detail view, click the **Rollback** link next to the version number. This swaps the Install app back to the previous version's Intune app (which still exists in Intune), so new installs receive the older working version. No re-packaging is needed.
+
+**Update App Rollback:**
+
+Rolling back a ring-based deployment removes the Intune assignments from active rings so no additional devices receive the update. Devices that already installed the update retain the new version -- Intune does not uninstall it.
 
 ### Signal-Based Ring Progression
 
