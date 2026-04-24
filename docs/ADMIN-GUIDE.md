@@ -1582,6 +1582,8 @@ In **Admin** > **Settings**, scroll to the **Update Ring Templates** section:
 - Click **Create Template** to define a new ring template
 - Each template has a name and one or more rings (up to 10)
 - Each ring has a name (e.g., "IT Pilot"), a delay in days, and one or more Entra ID security groups
+- Each ring has its own deployment settings: available/deadline timing, install behavior, restart settings, notifications, and delivery optimization
+- Click **Show Deployment Settings** on any ring to configure available time (days + time of day), deadline time, restart grace period, snooze settings, and more
 - Ring 1 typically has a 0-day delay (deploys immediately); subsequent rings deploy after their configured delay
 - Set one template as the **default** to auto-assign it to new apps
 - Click **Import from Autopatch** to discover Windows Autopatch ring groups from your Entra ID and pre-populate rings with those groups
