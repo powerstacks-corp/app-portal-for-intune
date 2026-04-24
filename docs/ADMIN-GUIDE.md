@@ -1632,7 +1632,7 @@ The **App Updates** tab shows active and recent deployments below the updates ta
 When you deploy an update with rings enabled, the system creates two separate Win32 apps in Intune:
 
 1. **Install app** (user-targeted) -- immediately updated to the new version so new installs always get the latest. Existing assignments are preserved.
-2. **Update app** (device-targeted) -- a separate Win32 app with a requirement script that only installs on devices that already have the app. Devices without the app see it as "Not Applicable." Ring assignments are created on this app.
+2. **Update app** -- a separate Win32 app with a requirement script that only installs on devices that already have the app. Devices without the app see it as "Not Applicable." Ring assignments are created on this app. The ring groups can be user-targeted or device-targeted depending on your organization's preference.
 
 This separation ensures:
 - New device enrollments always get the latest version (no vulnerability window)
